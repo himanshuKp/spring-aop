@@ -26,8 +26,13 @@ public class MainDemoApp {
 		
 		theAccountDAO.doWork();
 		
+		theAccountDAO.setAddress("Gzb");
+		theAccountDAO.setName("himanshu");
+		theAccountDAO.getAddress();
+		theAccountDAO.getName();
+		
 		theMembershipDAO.addMember();
-					
+		
 //		close the context
 		theContext.close();
 		

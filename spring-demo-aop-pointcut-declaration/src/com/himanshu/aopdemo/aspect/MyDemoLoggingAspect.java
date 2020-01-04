@@ -2,20 +2,38 @@ package com.himanshu.aopdemo.aspect;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 public class MyDemoLoggingAspect {
 
-//	this is where we add all of our related advices for logging
+//	declare pointcut expression
+	@Pointcut("execution(*  com.himanshu.aopdemo.dao.*.*(..))")
+	private void applyingCommonForDAO() {}
 	
+//	@Pointcut for getters
+	@Pointcut("execution(*  com.himanshu.aopdemo.dao.*.get*(..))")
+	private void getters() {}
 	
-//	lets start with and @Before advice
+//	@Pointcut for setters
+	@Pointcut("execution(*  com.himanshu.aopdemo.dao.*.set*(..))")
+	private void setters() {}
+	
+//	@Pointcut for DAO'S
+	@Pointcut("applyingCommonForDAO() && !(getters() || setters())")
+	private void forDAOwithnogettersandsetter() {}
+	
 	
 //	run this code before - target object method: "public void addAccount()
-	@Before("execution(*  com.himanshu.aopdemo.dao.*.add*(..))")	//pointcut expression
+	@Before("forDAOwithnogettersandsetter()")	//pointcut expression
 	public void beforeAddAccountAdvice() {
-		System.out.println(">>>>>>>>>> executing @Before advice on addAccount()");
+		System.out.println(">>>>>>>>>> executing @Before through @Pointcut");
+	}
+	
+	@Before("forDAOwithnogettersandsetter()")	//pointcut expression
+	public void anotherImplementation() {
+		System.out.println(">>>>>>>>>> executing anotherImplementation() through @Pointcut");
 	}
 }
