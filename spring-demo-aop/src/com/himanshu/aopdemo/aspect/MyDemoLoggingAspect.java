@@ -14,7 +14,7 @@ public class MyDemoLoggingAspect {
 //	lets start with and @Before advice
 	
 //	run this code before - target object method: "public void addAccount()
-	@Before("execution(* add*(com.himanshu.aopdemo.Account,..))")	//pointcut expression
+	@Before("execution(*  com.himanshu.aopdemo.dao.*.add*(..))")	//pointcut expression
 	public void beforeAddAccountAdvice() {
 		System.out.println(">>>>>>>>>> executing @Before advice on addAccount()");
 	}

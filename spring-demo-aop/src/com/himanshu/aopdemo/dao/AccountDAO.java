@@ -13,4 +13,8 @@ public class AccountDAO {
 	
 	}
 	
+	public void doWork() {
+		System.out.println("Dont just say, do it!");
+	}
+	
 }

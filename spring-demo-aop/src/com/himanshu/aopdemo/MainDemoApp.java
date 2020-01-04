@@ -24,6 +24,8 @@ public class MainDemoApp {
 		Account myAccount = new Account();
 		theAccountDAO.addAccount(myAccount);
 		
+		theAccountDAO.doWork();
+		
 		theMembershipDAO.addMember();
 					
 //		close the context
