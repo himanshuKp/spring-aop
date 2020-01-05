@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.himanshu.aopdemo.dao.AccountDAO;
-import com.himanshu.aopdemo.dao.MembershipDAO;
 public class MainDemoApp {
 
 	public static void main(String[] args) {

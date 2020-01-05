@@ -3,6 +3,7 @@ package com.himanshu.aopdemo.aspect;
 import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -66,7 +67,6 @@ public class BasicLoggingAnalytics implements UtilityPointcutExpressions {
 
 	}
 
-
 	private void convertToUpperCaseLetters(List<Account> result) {
 		// TODO Auto-generated method stub
 //		loop through result
@@ -86,6 +86,13 @@ public class BasicLoggingAnalytics implements UtilityPointcutExpressions {
 		System.out.println("\nAfter thrown exception is caught message. Method: " +method);
 		
 		System.out.println("Exception: "+theException);
+	}
+	
+	@After("execution(* com.himanshu.aopdemo.dao.AccountDAO.findAccounts(..))")
+	public void afterFinallyAdvice(JoinPoint joinPoint) {
+		String method = joinPoint.getSignature().toShortString();
+		
+		System.out.println("\nExecuting @After advice on method: "+method);
 	}
 
 }

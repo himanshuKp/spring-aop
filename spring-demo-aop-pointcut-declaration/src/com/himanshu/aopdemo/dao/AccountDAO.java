@@ -19,9 +19,9 @@ public class AccountDAO {
 	
 	public List<Account> findAccounts(boolean trip){
 
-		if(trip) {
-			throw new RuntimeException("No soup for you!!!");
-		}
+//		if(trip) {
+//			throw new RuntimeException("No soup for you!!!");
+//		}
 		
 		List<Account> myAccount = new ArrayList<Account>();
 		
