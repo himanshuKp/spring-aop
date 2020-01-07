@@ -1,9 +1,11 @@
 package com.himanshu.aopdemo;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.himanshu.aopdemo.dao.AccountDAO;
 import com.himanshu.aopdemo.service.FortuneService;
 
 public class AroundAdviceDemoApp {
@@ -16,6 +18,9 @@ public class AroundAdviceDemoApp {
 		AnnotationConfigApplicationContext theContext = 
 				new AnnotationConfigApplicationContext(DemoConfig.class);
 		
+//		get the accountdao bean from spring container
+		AccountDAO theAccountDAO = theContext.getBean("accountDAO",AccountDAO.class);
+		
 //		get the account bean from spring container
 		FortuneService theFortuneService = theContext.getBean("fortuneService",FortuneService.class);
 	
@@ -23,8 +28,10 @@ public class AroundAdviceDemoApp {
 		
 		myLogger.info("Calling theFortuneService method.");
 		
-		boolean tripWire = true;
-		String message = theFortuneService.getFortune(tripWire);
+//		boolean tripWire = true;
+//		String message = theFortuneService.getFortune();
+		
+		List<Account> message = theAccountDAO.findAccounts();
 		
 		myLogger.info("\nMethod message: " +message);
 
