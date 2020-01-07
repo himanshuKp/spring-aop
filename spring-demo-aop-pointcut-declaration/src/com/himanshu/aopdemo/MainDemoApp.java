@@ -35,8 +35,8 @@ public class MainDemoApp {
 		List<Account> theAccounts = null;
 				
 		try {
-			boolean flag = true;
-			theAccounts = theAccountDAO.findAccounts(flag);
+//			boolean flag = true;
+			theAccounts = theAccountDAO.findAccounts();
 		}
 		catch(Exception e) {
 			System.out.println("\nException is thrown in main method: " +e);

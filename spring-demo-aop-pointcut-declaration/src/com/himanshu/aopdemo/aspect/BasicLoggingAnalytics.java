@@ -1,11 +1,14 @@
 package com.himanshu.aopdemo.aspect;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -19,30 +22,32 @@ import com.himanshu.aopdemo.Account;
 @Order(1)
 public class BasicLoggingAnalytics implements UtilityPointcutExpressions {
 	
+	private Logger myLogger = Logger.getLogger(getClass().getName());
+	
 //	run this code before - target object method: "public void addAccount()
 	@Before("forDAOwithnogettersandsetter()")	//pointcut expression
 	public void basicLoggingAnalytics(JoinPoint theJoinPoint) {
-		System.out.println(">>>>>>>>>> executing basicLoggingAnalytics() through @Pointcut");
+		myLogger.info(">>>>>>>>>> executing basicLoggingAnalytics() through @Pointcut");
 
 //		display the method signature
 		MethodSignature methodSignature = (MethodSignature) theJoinPoint.getSignature();
 		
-		System.out.println("Method: " +methodSignature);
+		myLogger.info("Method: " +methodSignature);
 		
 		if(methodSignature!=null) {
 //			get args
 			Object[] args = theJoinPoint.getArgs();
 			
 			for(Object tempArg:args) {
-				System.out.println("Object: " +tempArg);
+				myLogger.info("Object: " +tempArg);
 				
 //				check if tempArg is an instance of certain class
 				if(tempArg instanceof Account) {
 					
 //					downcast the object
 					Account myAccount = (Account) tempArg;
-					System.out.println("Name: " +myAccount.getName());
-					System.out.println("Level: " +myAccount.getLevel());
+					myLogger.info("Name: " +myAccount.getName());
+					myLogger.info("Level: " +myAccount.getLevel());
 					
 				}
 			}
@@ -57,13 +62,13 @@ public class BasicLoggingAnalytics implements UtilityPointcutExpressions {
 		
 		String method = joinPoint.getSignature().toShortString();
 		
-		System.out.println("\nExecuting: @AfterReturning on method: " +method);
+		myLogger.info("\nExecuting: @AfterReturning on method: " +method);
 		
-		System.out.println("\nResult is: " +result);
+		myLogger.info("\nResult is: " +result);
 		
 		convertToUpperCaseLetters(result);
 		
-		System.out.println("\nResult is: " +result);
+		myLogger.info("\nResult is: " +result);
 
 	}
 
@@ -72,8 +77,10 @@ public class BasicLoggingAnalytics implements UtilityPointcutExpressions {
 //		loop through result
 		for(Account tempResult:result) {
 			String tempName = tempResult.getName().toUpperCase();
-			System.out.println(tempName);
+			String tempString = tempResult.getLevel().toUpperCase();
+//			myLogger.info(tempName);
 			tempResult.setName(tempName);
+			tempResult.setLevel(tempString);
 		}
 	}
 	
@@ -83,16 +90,49 @@ public class BasicLoggingAnalytics implements UtilityPointcutExpressions {
 		
 		String method = joinPoint.getSignature().toShortString();
 		
-		System.out.println("\nAfter thrown exception is caught message. Method: " +method);
+		myLogger.info("\nAfter thrown exception is caught message. Method: " +method);
 		
-		System.out.println("Exception: "+theException);
+		myLogger.info("Exception: "+theException);
 	}
 	
 	@After("execution(* com.himanshu.aopdemo.dao.AccountDAO.findAccounts(..))")
 	public void afterFinallyAdvice(JoinPoint joinPoint) {
 		String method = joinPoint.getSignature().toShortString();
 		
-		System.out.println("\nExecuting @After advice on method: "+method);
+		myLogger.info("\nExecuting @After advice on method: "+method);
 	}
-
+	
+	@Around("execution(* com.himanshu.aopdemo.service.*.getFortune(..))")
+	public Object aroundAdviceService(ProceedingJoinPoint theProceedingJoinPoint) throws Throwable {
+		
+		String method = theProceedingJoinPoint.getSignature().toShortString();
+		myLogger.info("Around Advice Service. Method: " +method);
+		
+		long startTime = System.currentTimeMillis();
+		
+		Object response = null;
+		
+		try {
+			response = theProceedingJoinPoint.proceed();
+		} catch (Throwable e) {
+//			handle and log the exception
+			myLogger.warning("Exception occured in the method:" +method+ ", Exception: " +e.getMessage());
+			
+//			throw normal response to the main calling program
+//			handling the exception, main program will never know that exception occured
+			response = "There is a delay in the service. Another service is on its way now!";
+			
+//			rethrow exception
+//			throw e;
+		}
+		
+		long endTime = System.currentTimeMillis();
+		
+		long timeTaken = endTime - startTime;
+		
+		myLogger.info("====> Duration: " +timeTaken/1000+ " seconds.");
+		
+		return response;
+	}
+	
 }

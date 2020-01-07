@@ -17,7 +17,7 @@ public class AccountDAO {
 		System.out.println(getClass()+" calling the getClass() method from the AccountDAO, doing DB operations.\n");
 	}
 	
-	public List<Account> findAccounts(boolean trip){
+	public List<Account> findAccounts(){
 
 //		if(trip) {
 //			throw new RuntimeException("No soup for you!!!");
