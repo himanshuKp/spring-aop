@@ -1,12 +1,34 @@
 package com.himanshu.jackson.json.demo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Student {
 
 	private int id;
 	private String firstName;
 	private String lastName;
 	private boolean active;
+	private String[] languages;
 	
+	private Address address;
+	
+	public String[] getLanguages() {
+		return languages;
+	}
+
+	public void setLanguages(String[] languages) {
+		this.languages = languages;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 	public Student() {
 		
 	}
