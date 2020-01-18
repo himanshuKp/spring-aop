@@ -14,5 +14,9 @@
 <h3>Link to Hello World REST Service</h3>
 <a href="${pageContext.request.contextPath}/test/hello">Say Hello</a>
 
+<hr>
+<h3>See list of students</h3>
+<a href="${pageContext.request.contextPath}/api/students">Students List</a>
+
 </body>
 </html>
