@@ -62,9 +62,16 @@ public class StudentRestController implements StudentStrings{
 		return new ResponseEntity<StudentErrorResponse>(errorResponse, HttpStatus.NOT_FOUND);
 	}
 	
-//	@ExceptionHandler
-//	public ResponseEntity<StudentErrorResponse> handleException(Exception e){
-//		
-//	}
+	@ExceptionHandler
+	public ResponseEntity<StudentErrorResponse> handleException(Exception e){
+		
+//		create error response for general type of errors
+		StudentErrorResponse errorResponse = new StudentErrorResponse();
+		errorResponse.setId(HttpStatus.BAD_REQUEST.value());
+		errorResponse.setMessage(loadStudent_exception);
+		errorResponse.setTimestamp(System.currentTimeMillis());
+		
+		return new ResponseEntity<StudentErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
 	
 }
